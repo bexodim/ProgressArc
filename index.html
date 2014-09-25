@@ -1,9 +1,26 @@
-<html>
+<!DOCTYPE html>
+<html ng-app="ProgressArc">
 <head>
     <title>Progress Arc</title>
+    <!-- Angular.js -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>
+    
+    <!-- D3.js -->
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    
+    <!-- Angular Application -->
+    <script src="app.js"></script>
+    
 </head>
-<body>
-    <div id="container">Arc will go here</div>
+<body ng-controller="getNumbers">
+<h1>Progress Arc</h1>
+<!-- these will be input boxes -->
+<p>Expected: {{expected}}</p>
+<p>Actual: {{actual}}</p>
+    
+<!-- d3 visualization will go here -->
+<div id="d3">
+</div>
 </body>
-    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    
 </html>
