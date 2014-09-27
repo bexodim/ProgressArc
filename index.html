@@ -2,14 +2,16 @@
 <html ng-app="ProgressArc">
 <head>
     <title>Progress Arc</title>
+    
     <!-- Angular.js -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>
     
     <!-- D3.js -->
-    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="extras/d3/d3.min.js"></script>
     
     <!-- Angular Application -->
     <script src="app.js"></script>
+
     
 </head>
 <body ng-controller="getNumbers">
@@ -22,5 +24,22 @@
 <div id="d3">
 </div>
 </body>
+    <script type="text/javascript">
+        var d3div = d3.select("#d3");
+
+        var svg = d3div.append("svg")
+            .attr("width", 500)
+            .attr("height", 500);
+        
+        var arc = d3.svg.arc()
+            .innerRadius(80)
+            .outerRadius(100)
+            .startAngle(0)
+            .endAngle(.8*2*Math.PI); //.8 will be expected
+        
+        var drawArc = svg.append("path")
+            .attr("d", arc)
+            .attr("transform", "translate(100,100)");
+    </script>
     
 </html>
