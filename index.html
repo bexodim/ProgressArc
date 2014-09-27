@@ -9,37 +9,24 @@
     <!-- D3.js -->
     <script src="extras/d3/d3.min.js"></script>
     
-    <!-- Angular Application -->
+    <!-- Custom Angular Application -->
     <script src="app.js"></script>
 
     
 </head>
 <body ng-controller="getNumbers">
-<h1>Progress Arc</h1>
-<!-- these will be input boxes -->
-<p>Expected: {{expected}}</p>
-<p>Actual: {{actual}}</p>
+    <h1>Progress Arc</h1>
     
-<!-- d3 visualization will go here -->
-<div id="d3">
-</div>
+    <!-- these will be input boxes -->
+    <p>Expected: 
+        <input type="number" step="0.1" min="0" max="1" ng-model="values.expected"/> {{ values.expected }}
+    </p>
+    <p>Actual: 
+        <input type="number" step="0.1" min="0" max="1" ng-model="values.actual"/> {{ values.actual }}
+    </p>
+    <! -- can move some of these attributes to css -->
+    
+    <div ng-progressbar ng-model="values">    
+    </div>
 </body>
-    <script type="text/javascript">
-        var d3div = d3.select("#d3");
-
-        var svg = d3div.append("svg")
-            .attr("width", 500)
-            .attr("height", 500);
-        
-        var arc = d3.svg.arc()
-            .innerRadius(80)
-            .outerRadius(100)
-            .startAngle(0)
-            .endAngle(.8*2*Math.PI); //.8 will be expected
-        
-        var drawArc = svg.append("path")
-            .attr("d", arc)
-            .attr("transform", "translate(100,100)");
-    </script>
-    
 </html>
