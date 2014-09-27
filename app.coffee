@@ -2,7 +2,7 @@ angular.module 'ProgressArc', []
  
 ## controller to generate two random values
     .controller 'getNumbers', ['$scope',($scope) ->
-        $scope.values = {expected: .5, actual: .75} ## start values
+        $scope.values = {expected: .5, actual: .25} ## start values
     ]
     ## directive that injects svg element into page
     .directive 'ngProgressbar', () ->
@@ -21,8 +21,8 @@ angular.module 'ProgressArc', []
                     if (newValue)
                         rawSvg = element.find("svg")[0]; ##coffee-script?
                         svg = d3.select rawSvg
-                            .attr 'width', 500
-                            .attr 'height', 500
+                            .attr 'width', 600
+                            .attr 'height', 600
 
                         values = scope.ngModel
                         ##console.log scope.ngModel
@@ -39,44 +39,49 @@ angular.module 'ProgressArc', []
                                 else "#ADEB1A" ## lighter green
                         
                         arcExpected = d3.svg.arc()
-                            .innerRadius 80
-                            .outerRadius 85
+                            .innerRadius 160
+                            .outerRadius 170
                             .startAngle 0
                             .endAngle values.expected*2*Math.PI
 
                         arcActual = d3.svg.arc()
-                            .innerRadius 90
-                            .outerRadius 100
+                            .innerRadius 180
+                            .outerRadius 200
                             .startAngle 0
                             .endAngle values.actual*2*Math.PI
                         
                         svg.selectAll('*').remove() ##coffee-script?
                         svg.append 'path'
                             .attr 'd', arcExpected
-                            .attr 'transform', 'translate(100,100)'
+                            .attr 'transform', 'translate(200,200)'
                             .attr 'fill', '#E9E9E9'
                         
                         svg.append 'path'
                             .attr 'd', arcActual
-                            .attr 'transform', 'translate(100,100)'
+                            .attr 'transform', 'translate(200,200)'
                             .attr 'fill', color
+                            ##.attr 'stroke-linecap', 'round' ##this is not working
                         
                         ## percentage
                         svg.append 'text'
-                            .attr 'x', 50
-                            .attr 'y', 125
+                            .attr 'x', arcActual.outerRadius()
+                            .attr 'y', arcActual.outerRadius()
                             .text(() ->
                                 v = Math.round 100*(values.actual)
                                 v+"%")
                             .attr 'fill', '#3B2E2A'
-                            .attr 'font-size', '4em'
+                            .attr 'font-size', '6em'
+                            .attr 'text-anchor', 'middle'
+                            .attr 'dominant-baseline', 'middle'
                         
                         ## "progress"
                         svg.append 'text'
-                            .attr 'x', 75
-                            .attr 'y', 145
+                            .attr 'x', arcActual.outerRadius()
+                            .attr 'y', 250 ## 1.25*arcActual.outerRadius()
                             .text("Progress")
                             .attr 'fill', '#3B2E2A'
-                            .attr 'font-size', '1em'
+                            .attr 'font-size', '2em'
+                            .attr 'text-anchor', 'middle'
+                            .attr 'dominant-baseline', 'middle'
             
         }
