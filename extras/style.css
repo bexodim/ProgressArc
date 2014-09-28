@@ -26,3 +26,25 @@ input[type=number] {
     margin: 0 20px 0 5px;
     padding: 3px 0px 3px 3px;
 }
+
+.bgcircle {
+    fill: #fafafa;
+}
+
+.arcExpected {
+    fill: #E9E9E9;
+}
+
+.midTextLarge {
+    fill: #3B2E2A;
+    font-size: 6em;
+    text-anchor: middle;
+    dominant-baseline: middle;
+}
+
+.midTextSmall {
+    fill: #3B2E2A;
+    font-size: 2em;
+    text-anchor: middle;
+    dominant-baseline: middle;
+}

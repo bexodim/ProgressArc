@@ -4,7 +4,7 @@
     '$scope', function($scope) {
       return $scope.values = {
         expected: .5,
-        actual: 0
+        actual: .6
       };
     }
   ]).directive('ngProgressbar', function() {
@@ -16,40 +16,74 @@
       },
       template: '<svg></svg>',
       link: function(scope, element, attributes) {
+        var actualArcRadius, arcActual, arcExpected, canvasHeight, canvasWidth, drawActual, drawExpected, expectedArcRadius, getColor, percentageText, rawSvg, svg, values;
+        canvasWidth = 600;
+        canvasHeight = 600;
+        expectedArcRadius = 175;
+        actualArcRadius = 200;
+        getColor = function(actual, expected) {
+          var actualIsBehind, color, lagDecimal;
+          actualIsBehind = actual < expected;
+          lagDecimal = Math.abs(actual - expected) / expected;
+          color = '#70C03D';
+          if (actualIsBehind) {
+            color = (function() {
+              switch (false) {
+                case !(lagDecimal > 0.75):
+                  return '#EE5422';
+                case !(lagDecimal > 0.50):
+                  return '#E3C215';
+                case !(lagDecimal > 0.25):
+                  return '#D9DF13';
+                default:
+                  return '#ADEB1A';
+              }
+            })();
+          }
+          return color;
+        };
+        rawSvg = element.find("svg")[0];
+        svg = d3.select(rawSvg).attr('width', canvasWidth).attr('height', canvasHeight);
+        values = scope.ngModel;
+        arcExpected = d3.svg.arc().innerRadius(expectedArcRadius - 10).outerRadius(expectedArcRadius).startAngle(0);
+        arcActual = d3.svg.arc().innerRadius(actualArcRadius - 20).outerRadius(actualArcRadius).startAngle(0);
+        svg.selectAll('*').remove();
+        svg.append('circle').attr('cx', actualArcRadius).attr('cy', actualArcRadius).attr('r', expectedArcRadius - 30).attr('class', 'bgcircle');
+        drawExpected = svg.append('path').datum({
+          endAngle: values.expected * 2 * Math.PI
+        }).attr('d', arcExpected).attr('transform', 'translate(' + actualArcRadius + ',' + actualArcRadius + ')').attr('class', 'arcExpected');
+        drawActual = svg.append('path').datum({
+          endAngle: values.actual * 2 * Math.PI,
+          color: '#70C03D'
+        }).attr('d', arcActual).attr('transform', 'translate(' + actualArcRadius + ',' + actualArcRadius + ')').attr('fill', getColor(values.actual, values.expected));
+        percentageText = svg.append('text').attr('x', actualArcRadius).attr('y', actualArcRadius).text(function() {
+          var v;
+          v = Math.round(100 * values.actual);
+          return v + "%";
+        }).attr('class', 'midTextLarge');
+        svg.append('text').attr('x', actualArcRadius).attr('y', 1.25 * actualArcRadius).text('Progress').attr('class', 'midTextSmall');
         return scope.$watchCollection('ngModel', function(newValue) {
-          var actualIsBehind, arcActual, arcExpected, color, lagDecimal, rawSvg, svg, values;
+          var arcTween;
           if (newValue) {
-            rawSvg = element.find("svg")[0];
-            svg = d3.select(rawSvg).attr('width', 600).attr('height', 600);
-            values = scope.ngModel;
-            actualIsBehind = values.actual < values.expected;
-            lagDecimal = Math.abs(values.actual - values.expected) / values.expected;
-            color = "#70C03D";
-            if (actualIsBehind) {
-              color = (function() {
-                switch (false) {
-                  case !(lagDecimal > 0.75):
-                    return "#EE5422";
-                  case !(lagDecimal > 0.50):
-                    return "#E3C215";
-                  case !(lagDecimal > 0.25):
-                    return "#D9DF13";
-                  default:
-                    return "#ADEB1A";
-                }
-              })();
-            }
-            arcExpected = d3.svg.arc().innerRadius(160).outerRadius(170).startAngle(0).endAngle(values.expected * 2 * Math.PI);
-            arcActual = d3.svg.arc().innerRadius(180).outerRadius(200).startAngle(0).endAngle(values.actual * 2 * Math.PI);
-            svg.selectAll('*').remove();
-            svg.append('path').attr('d', arcExpected).attr('transform', 'translate(200,200)').attr('fill', '#E9E9E9');
-            svg.append('path').attr('d', arcActual).attr('transform', 'translate(200,200)').attr('fill', color);
-            svg.append('text').attr('x', arcActual.outerRadius()).attr('y', arcActual.outerRadius()).text(function() {
+            arcTween = function(transition, newAngle, arc) {
+              return transition.attrTween('d', function(d) {
+                var interpolate;
+                interpolate = d3.interpolate(d.endAngle, newAngle);
+                return function(t) {
+                  d.endAngle = interpolate(t);
+                  return arc(d);
+                };
+              });
+            };
+            drawActual.transition().duration(750).call(arcTween, values.actual * 2 * Math.PI, arcActual).attr('fill', function(d) {
+              return getColor(values.actual, values.expected);
+            });
+            drawExpected.transition().duration(750).call(arcTween, values.expected * 2 * Math.PI, arcExpected);
+            return percentageText.transition().text(function() {
               var v;
               v = Math.round(100 * values.actual);
               return v + "%";
-            }).attr('fill', '#3B2E2A').attr('font-size', '6em').attr('text-anchor', 'middle').attr('dominant-baseline', 'middle');
-            return svg.append('text').attr('x', arcActual.outerRadius()).attr('y', 250).text("Progress").attr('fill', '#3B2E2A').attr('font-size', '2em').attr('text-anchor', 'middle').attr('dominant-baseline', 'middle');
+            });
           }
         });
       }
