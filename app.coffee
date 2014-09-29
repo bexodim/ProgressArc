@@ -127,7 +127,7 @@ angular.module 'ProgressArc', []
                         ## interpolates angle and color
                         drawActual.transition()
                             .duration 750
-                            .call arcTween, arcProperties.getAngle(arcProperties.actual), arcActual
+                            .call arcTween, arcProperties.getAngle(arcProperties.actual), arcActual ## newAngle, arc
                             .attr 'class', arcProperties.getClass(arcProperties.actual, arcProperties.expected)
                             
                         ## adds transition to expected arc

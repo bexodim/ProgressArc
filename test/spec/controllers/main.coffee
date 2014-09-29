@@ -19,15 +19,15 @@ describe 'Unit: ArcPropertiesController', () ->
     ## angle calculation testing
     it 'ensure getAngle returns 0 when actual = 0', () ->
         setup.scope.arcProperties.actual = 0
-        expect(setup.scope.arcProperties.getAngle(setup.scope.arcProperties.actual)).toEqual(0)
+        expect(setup.scope.arcProperties.getAngle(setup.scope.arcProperties.actual)).toEqual 0
         
     it 'ensure getAngle returns PI when actual = 0.5', () ->
         setup.scope.arcProperties.actual = 0.5
-        expect(setup.scope.arcProperties.getAngle(setup.scope.arcProperties.actual)).toEqual(Math.PI)
+        expect(setup.scope.arcProperties.getAngle(setup.scope.arcProperties.actual)).toEqual Math.PI
     
     it 'ensure getAngle returns 2*PI when actual = 1', () ->
         setup.scope.arcProperties.actual = 1
-        expect(setup.scope.arcProperties.getAngle(setup.scope.arcProperties.actual)).toEqual(2*Math.PI)
+        expect(setup.scope.arcProperties.getAngle(setup.scope.arcProperties.actual)).toEqual 2*Math.PI
     
     ###
     it 'ensure exception thrown and angle = 0 when user inputs negative', () ->
@@ -51,29 +51,29 @@ describe 'Unit: ArcPropertiesController', () ->
     it 'ensure getClass returns red when actual is lagging expected by more than 75%', () ->
         expected = 1
         actual = 0.24
-        expect(setup.scope.arcProperties.getClass(actual,expected)).toEqual('redarc')
+        expect(setup.scope.arcProperties.getClass(actual,expected)).toEqual 'redarc'
         
     it 'ensure getClass returns orange when actual is lagging expected by more than 50%', () ->
         expected = 1
         actual = 0.49
-        expect(setup.scope.arcProperties.getClass(actual,expected)).toEqual('orangearc')
+        expect(setup.scope.arcProperties.getClass(actual,expected)).toEqual 'orangearc'
         
     it 'ensure getClass returns yellow when actual is lagging expected by more than 25%', () ->
         expected = 1
         actual = 0.74
-        expect(setup.scope.arcProperties.getClass(actual,expected)).toEqual('yellowarc')
+        expect(setup.scope.arcProperties.getClass(actual,expected)).toEqual 'yellowarc'
         
     it 'ensure getClass returns green when actual is lagging expected at all', () ->
         expected = 1
         actual = 0.9
-        expect(setup.scope.arcProperties.getClass(actual,expected)).toEqual('greenarc')
+        expect(setup.scope.arcProperties.getClass(actual,expected)).toEqual 'greenarc'
         
     it 'ensure getClass returns bright green when actual is the same or greater than expected', () ->
         expected = 0.9
         actual = 0.9
         actualtoo = 0.95
-        expect(setup.scope.arcProperties.getClass(actual,expected)).toEqual('brightgreenarc')
-        expect(setup.scope.arcProperties.getClass(actualtoo,expected)).toEqual('brightgreenarc')
+        expect(setup.scope.arcProperties.getClass(actual,expected)).toEqual 'brightgreenarc'
+        expect(setup.scope.arcProperties.getClass(actualtoo,expected)).toEqual 'brightgreenarc'
 
 
 ## testing the d3 directive
@@ -99,30 +99,32 @@ describe 'ngProgressbar', () ->
 
     it 'should add an svg element', () ->
         rawSvg = setup.elm.find('svg')[0]
-        expect(rawSvg).not.toBe(null)
+        ##console.log 'rawSvg[0]:'+rawSvg
+        expect(rawSvg).not.toBe null
     
     it 'should add arcExpected path', () ->
-        rawPaths = setup.elm.find('path')
-        expect(rawPaths.attr('class')).toEqual('arcExpected')
+        rawPaths = setup.elm.find 'path'
+        expect(rawPaths.attr('class')).toEqual 'arcExpected'
 
-    it 'should add percentage and progress text', () ->
-        rawTexts = setup.elm.find('text')
-        expect(rawTexts.attr('class')).toBe('midTextLarge')
-        
+    it 'should add percentage text', () ->
+        rawTexts = setup.elm.find 'text'
+        ##console.log rawTexts
+        expect(rawTexts.attr('class')).toBe 'midTextLarge'
 
-    ## angle calculation testing for arc
-    ###
-    it 'ensure getAngle returns 0 when actual = 0', () ->
-        actualPath = setup.elm.find('path')
-        console.log actualPath.innerRadius()
-        setup.scope.arcProperties.actual = 0
-        expect(setup.scope.arcProperties.getAngle(setup.scope.arcProperties.actual)).toEqual(0)
-    ###
         
-    ## color testing for arc
-    ###
+###
     it 'ensure getClass returns red when actual is lagging expected by more than 75%', () ->
-        expected = 1
-        actual = 0.24
-        expect(setup.scope.arcProperties.getClass(actual,expected)).toEqual('redarc')
-    ###
+        setup.scope.arcProperties.expected = 1 ## not changing scope
+        setup.scope.arcProperties.actual = 0.24 ## not changing scope
+        actualPath = setup.elm.find('path')[1]
+        actualClass = actualPath.getAttribute 'class'
+        expect(actualClass).toContain('classredarc')
+###      
+### Need to be able to select arcs and get datum, .endAngle
+    ## angle calculation testing
+    it 'ensure getAngle returns 0 when actual = 0', () ->
+        actualPath = setup.elm.find('path')[1]
+        console.log 'actualPath class'+actualPath.getAttribute('d')
+        setup.scope.arcProperties.actual = 0
+        ##expect(setup.scope.arcProperties.getAngle(setup.scope.arcProperties.actual)).toEqual(0)
+###

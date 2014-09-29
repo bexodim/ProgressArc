@@ -99,26 +99,31 @@
       rawPaths = setup.elm.find('path');
       return expect(rawPaths.attr('class')).toEqual('arcExpected');
     });
-    return it('should add percentage and progress text', function() {
+    return it('should add percentage text', function() {
       var rawTexts;
       rawTexts = setup.elm.find('text');
       return expect(rawTexts.attr('class')).toBe('midTextLarge');
     });
-
-    /*
-    it 'ensure getAngle returns 0 when actual = 0', () ->
-        actualPath = setup.elm.find('path')
-        console.log actualPath.innerRadius()
-        setup.scope.arcProperties.actual = 0
-        expect(setup.scope.arcProperties.getAngle(setup.scope.arcProperties.actual)).toEqual(0)
-     */
-
-    /*
-    it 'ensure getClass returns red when actual is lagging expected by more than 75%', () ->
-        expected = 1
-        actual = 0.24
-        expect(setup.scope.arcProperties.getClass(actual,expected)).toEqual('redarc')
-     */
   });
+
+
+  /*
+      it 'ensure getClass returns red when actual is lagging expected by more than 75%', () ->
+          setup.scope.arcProperties.expected = 1 ## not changing scope
+          setup.scope.arcProperties.actual = 0.24 ## not changing scope
+          actualPath = setup.elm.find('path')[1]
+          actualClass = actualPath.getAttribute 'class'
+          expect(actualClass).toContain('classredarc')
+   */
+
+
+  /* Need to be able to select arcs and get datum, .endAngle
+       *# angle calculation testing
+      it 'ensure getAngle returns 0 when actual = 0', () ->
+          actualPath = setup.elm.find('path')[1]
+          console.log 'actualPath class'+actualPath.getAttribute('d')
+          setup.scope.arcProperties.actual = 0
+           *#expect(setup.scope.arcProperties.getAngle(setup.scope.arcProperties.actual)).toEqual(0)
+   */
 
 }).call(this);
