@@ -74,4 +74,30 @@
     });
   });
 
+  describe('ngProgressbar', function() {
+    var setup;
+    setup = {};
+    beforeEach(module('ProgressArc'));
+    beforeEach(inject(function($controller, $rootScope, $injector, $compile) {
+      setup.scope = $rootScope.$new();
+      setup.ctrl = $controller('ArcPropertiesController', {
+        $scope: setup.scope
+      });
+      setup.compile = $compile;
+      setup.elm = angular.element('<div ng-progressbar ng-model="arcProperties"></div>');
+      setup.scope.defined = false;
+      $compile(setup.elm)(setup.scope);
+      return setup.scope.$digest();
+    }));
+    it('should add an svg element', function() {
+      return expect(setup.elm.find('svg').length).toBe(1);
+    });
+    it('should add an arcActual and arcExpected path', function() {
+      return expect(setup.elm.find('path').length).toBe(2);
+    });
+    return it('should add percentage and progress text', function() {
+      return expect(setup.elm.find('text').length).toBe(2);
+    });
+  });
+
 }).call(this);

@@ -2,8 +2,7 @@
 (function() {
   angular.module('ProgressArc', []).controller('ArcPropertiesController', [
     '$scope', function($scope) {
-      var checkEdges;
-      $scope.arcProperties = {
+      return $scope.arcProperties = {
         expected: .5,
         actual: .6,
         getAngle: function(decimal) {
@@ -47,19 +46,6 @@
           return colorClass;
         }
       };
-      checkEdges = function(num) {
-        num = (function() {
-          switch (false) {
-            case !(num < 0):
-              return 0;
-            case !(num > 0):
-              return 1;
-          }
-        })();
-        return num;
-      };
-      checkEdges($scope.arcProperties.expected);
-      return checkEdges($scope.arcProperties.actual);
     }
   ]).directive('ngProgressbar', function() {
     return {
@@ -68,7 +54,7 @@
       scope: {
         ngModel: '='
       },
-      template: '<svg></svg>',
+      template: '<svg id="svg"></svg>',
       link: function(scope, element, attributes) {
         var actualArcRadius, arcActual, arcExpected, arcProperties, canvasHeight, canvasWidth, drawActual, drawExpected, expectedArcRadius, percentageText, rawSvg, svg;
         canvasWidth = 600;
@@ -83,10 +69,10 @@
         svg.append('circle').attr('cx', actualArcRadius).attr('cy', actualArcRadius).attr('r', expectedArcRadius - 30).attr('class', 'bgcircle');
         drawExpected = svg.append('path').datum({
           endAngle: arcProperties.getAngle(arcProperties.expected)
-        }).attr('d', arcExpected).attr('transform', 'translate(' + actualArcRadius + ',' + actualArcRadius + ')').attr('class', 'arcExpected');
+        }).attr('d', arcExpected).attr('transform', "translate(" + actualArcRadius + ", " + actualArcRadius + ")").attr('class', 'arcExpected');
         drawActual = svg.append('path').datum({
           endAngle: arcProperties.getAngle(arcProperties.actual)
-        }).attr('d', arcActual).attr('transform', 'translate(' + actualArcRadius + ',' + actualArcRadius + ')').attr('class', arcProperties.getClass(arcProperties.actual, arcProperties.expected));
+        }).attr('d', arcActual).attr('transform', "translate(" + actualArcRadius + ", " + actualArcRadius + ")").attr('class', arcProperties.getClass(arcProperties.actual, arcProperties.expected));
         percentageText = svg.append('text').attr('x', actualArcRadius).attr('y', actualArcRadius).text(function() {
           var v;
           v = Math.round(100 * arcProperties.actual);

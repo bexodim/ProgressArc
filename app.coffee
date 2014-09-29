@@ -32,16 +32,6 @@ angular.module 'ProgressArc', []
                     when actualIsBehind && lagDecimal then 'greenarc' ## light green
                     else 'brightgreenarc' ## bright green
                 colorClass
-        
-        checkEdges = (num) ->
-            num = switch
-                when num < 0 then 0
-                when num > 0 then 1
-            num
-        
-        checkEdges $scope.arcProperties.expected
-        checkEdges $scope.arcProperties.actual
-                
 
     ]
 
@@ -56,7 +46,7 @@ angular.module 'ProgressArc', []
             require: '^ngModel'
             scope:
                 ngModel: '='
-            template: '<svg></svg>'
+            template: '<svg id="svg"></svg>'
             link: (scope, element, attributes) ->
                 canvasWidth = 600
                 canvasHeight = 600
@@ -92,13 +82,13 @@ angular.module 'ProgressArc', []
                 drawExpected = svg.append 'path'
                     .datum {endAngle: arcProperties.getAngle(arcProperties.expected)}
                     .attr 'd', arcExpected
-                    .attr 'transform', 'translate('+actualArcRadius+','+actualArcRadius+')'
+                    .attr 'transform', "translate(#{ actualArcRadius }, #{ actualArcRadius })"
                     .attr 'class', 'arcExpected'
 
                 drawActual = svg.append 'path'
                     .datum {endAngle: arcProperties.getAngle(arcProperties.actual)}
                     .attr 'd', arcActual
-                    .attr 'transform', 'translate('+actualArcRadius+','+actualArcRadius+')'
+                    .attr 'transform', "translate(#{ actualArcRadius }, #{ actualArcRadius })"
                     .attr 'class', arcProperties.getClass(arcProperties.actual, arcProperties.expected)
 
                 ## draws text

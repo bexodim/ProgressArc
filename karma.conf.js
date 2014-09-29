@@ -17,9 +17,10 @@ module.exports = function(config) {
     files: [
         'extras/angular/angular.js',
         'extras/angular/angular-mocks.js',
+        'extras/d3/d3.js',
         'app.js',
         'test/spec/controllers/main.js',
-        'test/spec/directives/ngProgressbar_test.js',
+        //'test/spec/directives/ngProgressbar_test.js',
         'test/spec/directives/test.html'
     ],
 
@@ -60,7 +61,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome', 'Firefox', 'Safari'],
+    browsers: ['Chrome'],//, 'Firefox', 'Safari'],
 
 
     // Continuous Integration mode

@@ -13,12 +13,9 @@ describe 'Unit: ArcPropertiesController', () ->
         setup.ctrl = $controller 'ArcPropertiesController', {
           $scope: setup.scope
         }
-    
-    ## for getColor
-    ## create mockvalues for each actual from 0 to 1 in steps of .2 vs each expected
-        
-    
-    
+
+    ## later, add function that creates list of mock values to test
+
     ## angle calculation testing
     it 'ensure getAngle returns 0 when actual = 0', () ->
         setup.scope.arcProperties.actual = 0
@@ -77,3 +74,34 @@ describe 'Unit: ArcPropertiesController', () ->
         actualtoo = 0.95
         expect(setup.scope.arcProperties.getClass(actual,expected)).toEqual('brightgreenarc')
         expect(setup.scope.arcProperties.getClass(actualtoo,expected)).toEqual('brightgreenarc')
+
+
+## testing the d3 directive
+describe 'ngProgressbar', () ->
+
+    setup = {}
+
+    beforeEach module 'ProgressArc'
+    ##beforeEach module 'test.html' ## will need some kind of template file to test
+
+    beforeEach inject ($controller, $rootScope, $injector, $compile) ->
+        setup.scope = $rootScope.$new()
+        setup.ctrl = $controller 'ArcPropertiesController', {
+            $scope: setup.scope
+        }
+        setup.compile = $compile
+        
+        setup.elm = angular.element '<div ng-progressbar ng-model="arcProperties"></div>'
+        setup.scope.defined = false;
+        $compile(setup.elm)(setup.scope)
+        setup.scope.$digest()
+
+
+    it 'should add an svg element', () ->
+        expect(setup.elm.find('svg').length).toBe(1)
+    
+    it 'should add an arcActual and arcExpected path', () ->  
+        expect(setup.elm.find('path').length).toBe(2)
+
+    it 'should add percentage and progress text', () ->
+        expect(setup.elm.find('text').length).toBe(2)
