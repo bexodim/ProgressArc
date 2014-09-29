@@ -2,11 +2,29 @@
 (function() {
   angular.module('ProgressArc', []).controller('ArcPropertiesController', [
     '$scope', function($scope) {
-      return $scope.arcProperties = {
+      var checkEdges;
+      $scope.arcProperties = {
         expected: .5,
         actual: .6,
         getAngle: function(decimal) {
-          return decimal * 2 * Math.PI;
+          var angle, err;
+          angle = decimal * 2 * Math.PI;
+          try {
+            if (decimal > 1) {
+              throw "must be a fraction";
+            }
+            if (decimal < 0) {
+              throw "does not accept negative numbers";
+            }
+            if (isNaN(decimal)) {
+              throw "not a number";
+            }
+          } catch (_error) {
+            err = _error;
+            angle = 0;
+            alert('please enter a valid number');
+          }
+          return angle;
         },
         getClass: function(actual, expected) {
           var actualIsBehind, colorClass, lagDecimal;
@@ -29,6 +47,19 @@
           return colorClass;
         }
       };
+      checkEdges = function(num) {
+        num = (function() {
+          switch (false) {
+            case !(num < 0):
+              return 0;
+            case !(num > 0):
+              return 1;
+          }
+        })();
+        return num;
+      };
+      checkEdges($scope.arcProperties.expected);
+      return checkEdges($scope.arcProperties.actual);
     }
   ]).directive('ngProgressbar', function() {
     return {

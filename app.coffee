@@ -9,7 +9,18 @@ angular.module 'ProgressArc', []
             expected: .5
             actual: .6
             getAngle: (decimal) ->
-                decimal*2*Math.PI
+                angle = decimal*2*Math.PI
+                try
+                    if decimal > 1 
+                        throw "must be a fraction"
+                    if decimal < 0 
+                        throw "does not accept negative numbers"
+                    if isNaN decimal 
+                        throw "not a number"
+                catch err
+                    angle = 0
+                    alert 'please enter a valid number'
+                angle
             getClass: (actual, expected) ->
                 actualIsBehind = actual < expected
                 lagDecimal = Math.abs(actual - expected)/expected
@@ -21,6 +32,16 @@ angular.module 'ProgressArc', []
                     when actualIsBehind && lagDecimal then 'greenarc' ## light green
                     else 'brightgreenarc' ## bright green
                 colorClass
+        
+        checkEdges = (num) ->
+            num = switch
+                when num < 0 then 0
+                when num > 0 then 1
+            num
+        
+        checkEdges $scope.arcProperties.expected
+        checkEdges $scope.arcProperties.actual
+                
 
     ]
 
