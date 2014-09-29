@@ -35,6 +35,42 @@ input[type=number] {
     fill: #E9E9E9;
 }
 
+.redarc {
+    fill: #EE5422;
+    -moz-transition:fill .5s ease-in;
+    -o-transition:fill .5s ease-in;
+    -webkit-transition:fill .5s ease-in;
+    transition:fill .5s ease-in;
+}
+.orangearc {
+    fill: #E3C215;
+    -moz-transition:fill .5s ease-in;
+    -o-transition:fill .5s ease-in;
+    -webkit-transition:fill .5s ease-in;
+    transition:fill .5s ease-in;
+}
+.yellowarc {
+    fill: #D9DF13;
+    -moz-transition:fill .5s ease-in;
+    -o-transition:fill .5s ease-in;
+    -webkit-transition:fill .5s ease-in;
+    transition:fill .5s ease-in;
+}
+.greenarc {
+    fill: #ADEB1A;
+    -moz-transition:fill .5s ease-in;
+    -o-transition:fill .5s ease-in;
+    -webkit-transition:fill .5s ease-in;
+    transition:fill .5s ease-in;
+}
+.brightgreenarc {
+    fill: #70C03D;
+    -moz-transition:fill .5s ease-in;
+    -o-transition:fill .5s ease-in;
+    -webkit-transition:fill .5s ease-in;
+    transition:fill .5s ease-in;
+}
+
 .midTextLarge {
     fill: #3B2E2A;
     font-size: 6em;
