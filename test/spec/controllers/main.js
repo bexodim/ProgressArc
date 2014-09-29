@@ -90,14 +90,35 @@
       return setup.scope.$digest();
     }));
     it('should add an svg element', function() {
-      return expect(setup.elm.find('svg').length).toBe(1);
+      var rawSvg;
+      rawSvg = setup.elm.find('svg')[0];
+      return expect(rawSvg).not.toBe(null);
     });
-    it('should add an arcActual and arcExpected path', function() {
-      return expect(setup.elm.find('path').length).toBe(2);
+    it('should add arcExpected path', function() {
+      var rawPaths;
+      rawPaths = setup.elm.find('path');
+      return expect(rawPaths.attr('class')).toEqual('arcExpected');
     });
     return it('should add percentage and progress text', function() {
-      return expect(setup.elm.find('text').length).toBe(2);
+      var rawTexts;
+      rawTexts = setup.elm.find('text');
+      return expect(rawTexts.attr('class')).toBe('midTextLarge');
     });
+
+    /*
+    it 'ensure getAngle returns 0 when actual = 0', () ->
+        actualPath = setup.elm.find('path')
+        console.log actualPath.innerRadius()
+        setup.scope.arcProperties.actual = 0
+        expect(setup.scope.arcProperties.getAngle(setup.scope.arcProperties.actual)).toEqual(0)
+     */
+
+    /*
+    it 'ensure getClass returns red when actual is lagging expected by more than 75%', () ->
+        expected = 1
+        actual = 0.24
+        expect(setup.scope.arcProperties.getClass(actual,expected)).toEqual('redarc')
+     */
   });
 
 }).call(this);

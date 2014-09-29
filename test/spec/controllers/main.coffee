@@ -98,10 +98,31 @@ describe 'ngProgressbar', () ->
 
 
     it 'should add an svg element', () ->
-        expect(setup.elm.find('svg').length).toBe(1)
+        rawSvg = setup.elm.find('svg')[0]
+        expect(rawSvg).not.toBe(null)
     
-    it 'should add an arcActual and arcExpected path', () ->  
-        expect(setup.elm.find('path').length).toBe(2)
+    it 'should add arcExpected path', () ->
+        rawPaths = setup.elm.find('path')
+        expect(rawPaths.attr('class')).toEqual('arcExpected')
 
     it 'should add percentage and progress text', () ->
-        expect(setup.elm.find('text').length).toBe(2)
+        rawTexts = setup.elm.find('text')
+        expect(rawTexts.attr('class')).toBe('midTextLarge')
+        
+
+    ## angle calculation testing for arc
+    ###
+    it 'ensure getAngle returns 0 when actual = 0', () ->
+        actualPath = setup.elm.find('path')
+        console.log actualPath.innerRadius()
+        setup.scope.arcProperties.actual = 0
+        expect(setup.scope.arcProperties.getAngle(setup.scope.arcProperties.actual)).toEqual(0)
+    ###
+        
+    ## color testing for arc
+    ###
+    it 'ensure getClass returns red when actual is lagging expected by more than 75%', () ->
+        expected = 1
+        actual = 0.24
+        expect(setup.scope.arcProperties.getClass(actual,expected)).toEqual('redarc')
+    ###
